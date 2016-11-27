@@ -1,0 +1,6 @@
+*.suo
+*.sdf
+ipch/
+Debug/
+SMT/Debug/
+SMT/*.vcxproj.*
