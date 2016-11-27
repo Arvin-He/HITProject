@@ -38,7 +38,7 @@ public:
 	void UpdateDMC3000Data();
 	void UpdateDMC3000Status();
 	void UpdateDMC3000PulseAndDistance(int nAxisIndex, int nPulseID, int nDisID);
-	void UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID, int orgID);
+	void UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID);
 private:
 	CString m_strPulseCount;
 	CString m_strDistance;
@@ -150,15 +150,7 @@ public:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnClickedSetStageXHomeBtn();
 	afx_msg void OnClickedSetStageYHomeBtn();
-	afx_msg void OnClickedSetCcdXHomeBtn();
-	afx_msg void OnClickedSetCcdZHomeBtn();
-	afx_msg void OnClickedStageXGohomeBtn();
-	afx_msg void OnClickedStageYGohomeBtn();
-	afx_msg void OnClickedCcdXGohomeBtn();
-	afx_msg void OnClickedCcdZGohomeBtn();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnClickedStageXStopBtn();
 	afx_msg void OnClickedStageYStopBtn();
-	afx_msg void OnClickedCcdXStopBtn();
-	afx_msg void OnClickedCcdZStopBtn();
 };

@@ -92,17 +92,9 @@ BEGIN_MESSAGE_MAP(CSMTDlg, CDialogEx)
 	ON_WM_RBUTTONDOWN()
 	ON_BN_CLICKED(IDC_SET_STAGE_X_HOME_BTN, &CSMTDlg::OnClickedSetStageXHomeBtn)
 	ON_BN_CLICKED(IDC_SET_STAGE_Y_HOME_BTN, &CSMTDlg::OnClickedSetStageYHomeBtn)
-	ON_BN_CLICKED(IDC_SET_CCD_X_HOME_BTN, &CSMTDlg::OnClickedSetCcdXHomeBtn)
-	ON_BN_CLICKED(IDC_SET_CCD_Z_HOME_BTN, &CSMTDlg::OnClickedSetCcdZHomeBtn)
-	ON_BN_CLICKED(IDC_STAGE_X_GOHOME_BTN, &CSMTDlg::OnClickedStageXGohomeBtn)
-	ON_BN_CLICKED(IDC_STAGE_Y_GOHOME_BTN, &CSMTDlg::OnClickedStageYGohomeBtn)
-	ON_BN_CLICKED(IDC_CCD_X_GOHOME_BTN, &CSMTDlg::OnClickedCcdXGohomeBtn)
-	ON_BN_CLICKED(IDC_CCD_Z_GOHOME_BTN, &CSMTDlg::OnClickedCcdZGohomeBtn)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_STAGE_X_STOP_BTN, &CSMTDlg::OnClickedStageXStopBtn)
 	ON_BN_CLICKED(IDC_STAGE_Y_STOP_BTN, &CSMTDlg::OnClickedStageYStopBtn)
-	ON_BN_CLICKED(IDC_CCD_X_STOP_BTN, &CSMTDlg::OnClickedCcdXStopBtn)
-	ON_BN_CLICKED(IDC_CCD_Z_STOP_BTN, &CSMTDlg::OnClickedCcdZStopBtn)
 END_MESSAGE_MAP()
 
 
@@ -117,7 +109,7 @@ BOOL CSMTDlg::OnInitDialog()
 	//SetIcon(m_hIcon, FALSE);		// Set small icon
 	ShowWindow(SW_MAXIMIZE);
 	// TODO: Add extra initialization here
-	SetWindowText(_T("贴片机系统"));
+	SetWindowText(_T("水导激光系统"));
 	//add menu
 	if (!m_menu.LoadMenu(IDR_MENU))
 	{
@@ -956,105 +948,12 @@ void CSMTDlg::OnClickedSetStageYHomeBtn()
 }
 
 
-void CSMTDlg::OnClickedSetCcdXHomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	dmc_set_position(g_nCardNo, 2, 0);
-}
-
-
-void CSMTDlg::OnClickedSetCcdZHomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	dmc_set_position(g_nCardNo, 3, 0);
-}
-
-
-void CSMTDlg::OnClickedStageXGohomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	UpdateData(true);//刷新参数
-	dmc_set_pulse_outmode(g_nCardNo, 0, 0);  //设置脉冲输出模式
-	dmc_set_profile(g_nCardNo, 0, 100, 1000, 0.02, 0.02, 500);//设置速度曲线
-	dmc_set_homemode(g_nCardNo, 0, 0, 1, 0, 1);//设置回零方式
-	dmc_home_move(g_nCardNo, 0);//回零动作
-	while (dmc_check_done(g_nCardNo, 0) == 0)      //判断当前轴状态 0：指定轴正在运行，1：指定轴已停止
-	{
-		AfxGetApp()->PumpMessage();
-		GetDlgItem(IDC_STAGE_X_GOHOME_BTN)->EnableWindow(false); 
-	}
-	GetDlgItem(IDC_STAGE_X_GOHOME_BTN)->EnableWindow(true); 
-	UpdateData(false);
-}
-
-
-void CSMTDlg::OnClickedStageYGohomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	UpdateData(true);//刷新参数
-	dmc_set_pulse_outmode(g_nCardNo, 1, 0);  //设置脉冲输出模式
-	dmc_set_profile(g_nCardNo, 1, 100, 1000, 0.02, 0.02, 500);//设置速度曲线
-	dmc_set_homemode(g_nCardNo, 1, 0, 1, 0, 1);//设置回零方式
-	dmc_home_move(g_nCardNo, 1);//回零动作
-	while (dmc_check_done(g_nCardNo, 1) == 0)      //判断当前轴状态 0：指定轴正在运行，1：指定轴已停止
-	{
-		AfxGetApp()->PumpMessage();
-		GetDlgItem(IDC_STAGE_Y_GOHOME_BTN)->EnableWindow(false); 
-	}
-	GetDlgItem(IDC_STAGE_Y_GOHOME_BTN)->EnableWindow(true); 
-	UpdateData(false);
-}
-
-
-void CSMTDlg::OnClickedCcdXGohomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	UpdateData(true);//刷新参数
-	dmc_set_pulse_outmode(g_nCardNo, 2, 0);  //设置脉冲输出模式
-	dmc_set_profile(g_nCardNo, 2, 100, 1000, 0.02, 0.02, 500);//设置速度曲线
-	dmc_set_homemode(g_nCardNo, 2, 0, 1, 0, 1);//设置回零方式
-	dmc_home_move(g_nCardNo, 2);//回零动作
-	while (dmc_check_done(g_nCardNo, 2) == 0)      //判断当前轴状态 0：指定轴正在运行，1：指定轴已停止
-	{
-		AfxGetApp()->PumpMessage();
-		GetDlgItem(IDC_CCD_X_GOHOME_BTN)->EnableWindow(false); 
-	}
-	GetDlgItem(IDC_CCD_X_GOHOME_BTN)->EnableWindow(true); 
-	UpdateData(false);
-}
-
-
-void CSMTDlg::OnClickedCcdZGohomeBtn()
-{
-	// TODO: Add your control notification handler code here
-	UpdateData(true);//刷新参数
-	dmc_set_pulse_outmode(g_nCardNo, 3, 0);  //设置脉冲输出模式
-	dmc_set_profile(g_nCardNo, 3, 100, 1000, 0.02, 0.02, 500);//设置速度曲线
-	dmc_set_homemode(g_nCardNo, 3, 0, 1, 0, 1);//设置回零方式
-	dmc_home_move(g_nCardNo, 3);//回零动作
-	while (dmc_check_done(g_nCardNo, 3) == 0)      //判断当前轴状态 0：指定轴正在运行，1：指定轴已停止
-	{
-		AfxGetApp()->PumpMessage();
-		GetDlgItem(IDC_CCD_Z_GOHOME_BTN)->EnableWindow(false); 
-	}
-	GetDlgItem(IDC_CCD_Z_GOHOME_BTN)->EnableWindow(true); 
-	UpdateData(false);
-}
-
 void CSMTDlg::InitDMC3000Status()
 {
 	SetDMC3000Status(FALSE, IDC_STAGE_X_EL_UP);
 	SetDMC3000Status(FALSE, IDC_STAGE_X_EL_DOWN);
-	SetDMC3000Status(FALSE, IDC_STAGE_X_ORG);
 	SetDMC3000Status(FALSE, IDC_STAGE_Y_EL_UP);
 	SetDMC3000Status(FALSE, IDC_STAGE_Y_EL_DOWN);
-	SetDMC3000Status(FALSE, IDC_STAGE_Y_ORG);
-	SetDMC3000Status(FALSE, IDC_CCD_X_EL_UP);
-	SetDMC3000Status(FALSE, IDC_CCD_X_EL_DOWN);
-	SetDMC3000Status(FALSE, IDC_CCD_X_ORG);
-	SetDMC3000Status(FALSE, IDC_CCD_Z_EL_UP);
-	SetDMC3000Status(FALSE, IDC_CCD_Z_EL_DOWN);
-	SetDMC3000Status(FALSE, IDC_CCD_Z_ORG);
 }
 
 // 设置DMC3000运动状态中一些io的图标
@@ -1090,23 +989,19 @@ void CSMTDlg::UpdateDMC3000Data()
 {
 	UpdateDMC3000PulseAndDistance(0, IDC_STAGE_X_PULSE_EDIT, IDC_STAGE_X_POS_EDIT);
 	UpdateDMC3000PulseAndDistance(1, IDC_STAGE_Y_PULSE_EDIT, IDC_STAGE_Y_POS_EDIT);
-	UpdateDMC3000PulseAndDistance(2, IDC_CCD_X_PULSE_EDIT, IDC_CCD_X_POS_EDIT);
-	UpdateDMC3000PulseAndDistance(3, IDC_CCD_Z_PULSE_EDIT, IDC_CCD_Z_POS_EDIT);
-	UpdateDMC3000Status(0, IDC_STAGE_X_EL_UP, IDC_STAGE_X_EL_DOWN, IDC_STAGE_X_ORG);
-	UpdateDMC3000Status(1, IDC_STAGE_Y_EL_UP, IDC_STAGE_Y_EL_DOWN, IDC_STAGE_Y_ORG);
-	UpdateDMC3000Status(2, IDC_CCD_X_EL_UP, IDC_CCD_X_EL_DOWN, IDC_CCD_X_ORG);
-	UpdateDMC3000Status(3, IDC_CCD_Z_EL_UP, IDC_CCD_Z_EL_DOWN, IDC_CCD_Z_ORG);
+	UpdateDMC3000Status(0, IDC_STAGE_X_EL_UP, IDC_STAGE_X_EL_DOWN);
+	UpdateDMC3000Status(1, IDC_STAGE_Y_EL_UP, IDC_STAGE_Y_EL_DOWN);
 }
 
 // 更新状态位
-void CSMTDlg::UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID, int orgID)
+void CSMTDlg::UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID)
 {
 	int elup = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x01;
 	int eldown = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x02;
-	int org = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x10;
+	//int org = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x10;
 	SetDMC3000Status(elup, elupID);
 	SetDMC3000Status(eldown, eldownID);
-	SetDMC3000Status(org, orgID);
+	//SetDMC3000Status(org, orgID);
 }
 
 // 更新脉冲数和距离
@@ -1131,18 +1026,4 @@ void CSMTDlg::OnClickedStageYStopBtn()
 {
 	// TODO: Add your control notification handler code here
 	dmc_stop(g_nCardNo, 1, 0); //减速停止
-}
-
-
-void CSMTDlg::OnClickedCcdXStopBtn()
-{
-	// TODO: Add your control notification handler code here
-	dmc_stop(g_nCardNo, 2, 0); //减速停止
-}
-
-
-void CSMTDlg::OnClickedCcdZStopBtn()
-{
-	// TODO: Add your control notification handler code here
-	dmc_stop(g_nCardNo, 3, 0); //减速停止
 }
