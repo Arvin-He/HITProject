@@ -10,10 +10,12 @@ class CSettingDlg : public CDialogEx
 public:
 	CSettingDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSettingDlg();
-	void SetSoftLimitModifiable(int nID, BOOL modifiable);
+	void SetSoftLimitReadOnly(int nID, BOOL modifiable);
+	void SetSoftLimit();
+	void GetSoftLimit();
 
 // Dialog Data
-	enum { IDD = IDD_SETTING_DIALOG };
+	enum { IDD = IDD_SETTING_SOFTLIMIT_DIALOG };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -22,4 +24,5 @@ protected:
 public:
 	afx_msg void OnClickedModifySoftlimitBtn();
 	afx_msg void OnClickedApplySoftlimitBtn();
+	virtual BOOL OnInitDialog();
 };

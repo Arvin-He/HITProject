@@ -84,6 +84,8 @@ BEGIN_MESSAGE_MAP(CWJGLDlg, CDialogEx)
 	ON_COMMAND(IDM_SAVE_PIC, &CWJGLDlg::OnCamera_SavePic)
 	ON_COMMAND(IDM_SAVE_VIDEO, &CWJGLDlg::OnCamera_SaveVideo)
 	ON_COMMAND(IDM_STOP_VIDEO, &CWJGLDlg::OnCamera_StopVideo)
+	ON_COMMAND(IDM_SAVE_PARAM, &CWJGLDlg::OnSaveParam)
+	ON_COMMAND(IDM_LOAD_PARAM, &CWJGLDlg::OnLoadParam)
 	ON_WM_HSCROLL()
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB, &CWJGLDlg::OnTcnSelchangeTab)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB2, &CWJGLDlg::OnTcnSelchangeTab2)
@@ -132,6 +134,8 @@ BOOL CWJGLDlg::OnInitDialog()
 	m_imageList.Add(AfxGetApp()->LoadIcon(IDI_SAVE_PIC));
 	m_imageList.Add(AfxGetApp()->LoadIcon(IDI_SAVE_VIDEO));
 	m_imageList.Add(AfxGetApp()->LoadIcon(IDI_STOP_VIDEO));
+	m_imageList.Add(AfxGetApp()->LoadIcon(IDI_SAVE_PARAM));
+	m_imageList.Add(AfxGetApp()->LoadIcon(IDI_LOAD_PARAM));
 	m_toolBar.GetToolBarCtrl().SetImageList(&m_imageList);
 	m_toolBar.ShowWindow(SW_SHOW);
 	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
@@ -185,11 +189,11 @@ BOOL CWJGLDlg::OnInitDialog()
 
 
 	m_bottomTab.InsertItem(0, _T("图像辅助"));
-	m_bottomTab.InsertItem(1, _T("设置"));
-	m_bottomTab.InsertItem(3, _T("运动参数设置"));
+	m_bottomTab.InsertItem(1, _T("软限位设置"));
+	m_bottomTab.InsertItem(2, _T("运动参数设置"));
 	m_imageAssistDlg.Create(IDD_IMAGE_ASSIST_DIALOG, GetDlgItem(IDC_TAB2));
-	m_settingDlg.Create(IDD_SETTING_DIALOG, GetDlgItem(IDC_TAB2));
-	m_setParamDlg.Create(IDD_SETTING_SOFTWARE_DIALOG, GetDlgItem(IDC_TAB2));
+	m_settingDlg.Create(IDD_SETTING_SOFTLIMIT_DIALOG, GetDlgItem(IDC_TAB2));
+	m_setParamDlg.Create(IDD_SETTING_PARAM_DIALOG, GetDlgItem(IDC_TAB2));
 	m_imageAssistDlg.EnableWindow(TRUE);
 	m_settingDlg.EnableWindow(TRUE);
 	m_setParamDlg.EnableWindow(TRUE);
@@ -718,6 +722,54 @@ BOOL CWJGLDlg::SetGain(int ctrID)
 	return TRUE;
 }
 
+void CWJGLDlg::WriteCCDConfig()
+{
+	CString		fileName(_T(".\\config\\CCD.ini"));
+	CString		appName(_T("section1"));
+	CString		keyName(_T("CCD增益"));
+	CString		data(_T(""));
+	GetDlgItem(IDC_EDIT_GAIN)->GetWindowText(data);
+	WritePrivateProfileString(appName, keyName, data, fileName);
+	appName = _T("section2");
+	keyName = _T("CCD曝光度");
+	GetDlgItem(IDC_EDIT_SHUTTER)->GetWindowText(data);
+	WritePrivateProfileString(appName, keyName, data, fileName);
+}
+
+void CWJGLDlg::OnSaveParam()
+{
+	WriteCCDConfig();
+}
+
+void CWJGLDlg::ReadCCDConfig()
+{
+	CString		fileName(_T(".\\config\\CCD.ini"));
+	char gain[20];
+	CString gainValue(_T(""));
+	char shutter[20];
+	CString shutterValue(_T(""));
+	int nGainPosition(0);
+	int nShutterPosition(0);
+	GetPrivateProfileString(_T("section1"), _T("CCD增益"), _T("gain"), gain, 20, fileName);
+	gainValue = gain;
+	nGainPosition = atoi(gainValue);
+	m_sliderGain.SetPos(nGainPosition);    //设置滑块控件到指定位置
+	m_spinGain.SetPos(nGainPosition);
+	SetGain(IDC_SLIDER_GAIN);
+
+	GetPrivateProfileString(_T("section2"), _T("CCD曝光度"), _T("shutter"), shutter, 20, fileName);
+	shutterValue = shutter;
+	nShutterPosition = atoi(shutterValue);
+	m_sliderShutter.SetPos(nShutterPosition);    //设置滑块控件到指定位置
+	m_spinShutter.SetPos(nShutterPosition);
+	SetExposureTime(m_hhv, Width, nShutterPosition, ExposureTint_Lower, m_lHBlanking, SnapSpeed, Resolution);	
+}
+
+void CWJGLDlg::OnLoadParam()
+{
+	ReadCCDConfig();
+}
+
 void CWJGLDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: Add your control notification handler code here
@@ -783,25 +835,18 @@ BOOL CWJGLDlg::InitDMC3000Card()
 	if( dmc_board_init() <= 0 )			//控制卡的初始化操作
 		MessageBox(_T("初始化控制卡失败！"), _T("出错"));
 	dmc_get_CardInfList(&My_CardNum, My_CardTypeList, My_CardList);    //获取正在使用的卡号列表
-	//m_nCard = My_CardList[0];
 	g_nCardNo = My_CardList[0];
 
 	for (int i=0; i<g_nAxisCount; i++)
 	{
 		// 设定脉冲模式及逻辑方向	
 		dmc_set_pulse_outmode(g_nCardNo, i, 4);
-		// 设置硬限位
+		// 设置 EL 限位信号
 		dmc_set_el_mode(g_nCardNo, i, 1, 1, 0);
-		// 设置软限位
-		//dmc_set_softlimit(g_nCardNo, i, 1, 1, 0, 0, )
-		// 编码器设置
+		// 设置编码器的计数方式
 		dmc_set_counter_inmode(g_nCardNo, i, 0);
-		//设置EZ
+		//设置指定轴的 EZ 信号
 		dmc_set_ez_mode(g_nCardNo, i, 0);
-		// 设置回原点信号
-		// dmc_set_home_pin_logic(g_nCardNo, i, 1);
-		// 设置回原点模式,和方向有关
-		//dmc_set_homemode(g_nCardNo, i, 0, 0, 0);
 	}
 	return TRUE;
 }
@@ -817,12 +862,8 @@ BOOL CWJGLDlg::ResetDMC3000Card()
 // 画十字
 void CWJGLDlg::DrawCross(Mat img)
 {
-	Point centerPt(Width/2, Height/2);
-	circle(img, centerPt, 15, Scalar(0,255,0), 1, CV_AA);
-	line(img, Point(centerPt.x-20, centerPt.y), 
-		Point(centerPt.x+20, centerPt.y), Scalar(0,255,0), 1, CV_AA);
-	line(img, Point(centerPt.x, centerPt.y-20), 
-		Point(centerPt.x, centerPt.y+20), Scalar(0,255,0), 1, CV_AA);
+	line(img, Point(0, Height/2), Point(Width, Height/2), Scalar(0,255,0), 1, CV_AA);
+	line(img, Point(Width/2, 0), Point(Width/2, Height), Scalar(0,255,0), 1, CV_AA);
 }
 
 // 画比例尺
@@ -987,8 +1028,10 @@ void CWJGLDlg::OnTimer(UINT_PTR nIDEvent)
 // 更新DMC3000运动状态
 void CWJGLDlg::UpdateDMC3000Data()
 {
-	UpdateDMC3000PulseAndDistance(0, IDC_STAGE_X_PULSE_EDIT, IDC_STAGE_X_POS_EDIT);
-	UpdateDMC3000PulseAndDistance(1, IDC_STAGE_Y_PULSE_EDIT, IDC_STAGE_Y_POS_EDIT);
+	UpdateDMC3000Pulse(0, IDC_STAGE_X_PULSE_EDIT);
+	UpdateDMC3000Pulse(1, IDC_STAGE_Y_PULSE_EDIT);
+	UpdateDistance(0, IDC_STAGE_X_POS_EDIT);
+	UpdateDistance(1, IDC_STAGE_Y_POS_EDIT);
 	UpdateDMC3000Status(0, IDC_STAGE_X_EL_UP, IDC_STAGE_X_EL_DOWN);
 	UpdateDMC3000Status(1, IDC_STAGE_Y_EL_UP, IDC_STAGE_Y_EL_DOWN);
 }
@@ -998,21 +1041,27 @@ void CWJGLDlg::UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID)
 {
 	int elup = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x01;
 	int eldown = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x02;
-	//int org = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x10;
 	SetDMC3000Status(elup, elupID);
 	SetDMC3000Status(eldown, eldownID);
-	//SetDMC3000Status(org, orgID);
 }
 
-// 更新脉冲数和距离
-void CWJGLDlg::UpdateDMC3000PulseAndDistance(int nAxisIndex, int nPulseID, int nDisID)
+// 更新脉冲数
+void CWJGLDlg::UpdateDMC3000Pulse(int nAxisIndex, int nPulseID)
 {
 	long currentPulse = dmc_get_position(g_nCardNo, nAxisIndex); //获取当前轴位置
-	double currentPos = TransPulseToDistance(nAxisIndex, currentPulse);
 	m_strPulseCount.Format(_T("%ld"), currentPulse);
-	m_strDistance.Format(_T("%ld"), currentPos);
 	GetDlgItem(nPulseID)->SetWindowText(m_strPulseCount);
+	UpdateData(FALSE);
+}
+// 更新距离
+void CWJGLDlg::UpdateDistance(int nAxisIndex, int nDisID)
+{
+	UpdateData(TRUE);
+	long currentPulse = dmc_get_position(g_nCardNo, nAxisIndex); //获取当前轴位置
+	double currentPos = TransPulseToDistance(nAxisIndex, currentPulse);
+	m_strDistance.Format(_T("%.3f"), currentPos);
 	GetDlgItem(nDisID)->SetWindowText(m_strDistance);
+	UpdateData(FALSE);
 }
 
 void CWJGLDlg::OnClickedStageXStopBtn()

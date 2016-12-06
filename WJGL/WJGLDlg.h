@@ -37,8 +37,11 @@ public:
 	void SetDMC3000Status(BOOL status, int nID);
 	void UpdateDMC3000Data();
 	void UpdateDMC3000Status();
-	void UpdateDMC3000PulseAndDistance(int nAxisIndex, int nPulseID, int nDisID);
+	void UpdateDMC3000Pulse(int nAxisIndex, int nPulseID);
+	void UpdateDistance(int nAxisIndex, int nDisID);
 	void UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID);
+	void WriteCCDConfig();
+	void ReadCCDConfig();
 private:
 	CString m_strPulseCount;
 	CString m_strDistance;
@@ -140,7 +143,9 @@ public:
 	afx_msg void OnCamera_Close();
 	afx_msg void OnCamera_SavePic();
 	afx_msg void OnCamera_SaveVideo();
-	afx_msg void OnCamera_StopVideo();	
+	afx_msg void OnCamera_StopVideo();
+	afx_msg void OnSaveParam();
+	afx_msg void OnLoadParam();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTcnSelchangeTab2(NMHDR *pNMHDR, LRESULT *pResult);

@@ -1,14 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
 //这里是一些全局变量
 //////////////////////////////////////////////////////////////////////////
-
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
-
-using namespace cv;
 //图像
-extern Mat g_src;    
+extern cv::Mat g_src;    
 //卡号
 extern WORD g_nCardNo;  
 //轴数
@@ -25,8 +20,8 @@ struct SoftLimitParam
 	int nCCDELUpZ;
 	int nCCDELDownZ;
 };
-
-// 
+extern SoftLimitParam g_softLimitParamStruct;
+///////////////// 设置各轴的运动参数////////////
 struct StageXAxisParam
 {
 	int nStartSpeed;
@@ -36,6 +31,7 @@ struct StageXAxisParam
 	double nDecelerateTime;
 	double nSDecelerateTime;
 };
+extern StageXAxisParam g_stageXAxisParamStruct;
 
 struct StageYAxisParam
 {
@@ -46,28 +42,10 @@ struct StageYAxisParam
 	double nDecelerateTime;
 	double nSDecelerateTime;
 };
-
-struct CCDXAxisParam
-{
-	int nStartSpeed;
-	int nRunSpeed;
-	int nEndSpeed;
-	double nAccelerateTime;
-	double nDecelerateTime;
-	double nSDecelerateTime;
-};
-
-struct CCDZAxisParam
-{
-	int nStartSpeed;
-	int nRunSpeed;
-	int nEndSpeed;
-	double nAccelerateTime;
-	double nDecelerateTime;
-	double nSDecelerateTime;
-};
+extern StageYAxisParam g_stageYAxisParamStruct;
 
 extern double TransPulseToDistance(int nAxisIndex, int nPulse);
 extern int TransDistanceToPulse(int nAxisIndex, int nDistance);
-
+extern void SetMotionParam(int nAxisIndex);
+extern void DMC3000_Move(int nCardNo, int nAxisIndex, int nPulse, int nDirection, int nMoveMode);
 

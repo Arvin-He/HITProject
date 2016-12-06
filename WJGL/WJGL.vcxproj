@@ -108,6 +108,9 @@
     <None Include="res\icon\delete.ico" />
     <None Include="res\icon\green.bmp" />
     <None Include="res\icon\open.ico" />
+    <None Include="res\icon\paraREAD.ico" />
+    <None Include="res\icon\parasave.ico" />
+    <None Include="res\icon\parasave1.ico" />
     <None Include="res\icon\red.bmp" />
     <None Include="res\icon\stop.ico" />
     <None Include="res\icon\video.ico" />

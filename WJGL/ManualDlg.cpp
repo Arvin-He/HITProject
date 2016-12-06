@@ -73,16 +73,3 @@ BOOL CManualDlg::OnStageMove(UINT nID)
 	UpdateData(FALSE);
 	return TRUE;
 }
-
-// 封装dmc运动函数:卡号, 轴号, 脉冲数, 运动方向, 运动模式
-void CManualDlg::DMC3000_Move(int nCardNo, int nAxisIndex, int nPulse, int nDirection, int nMoveMode)
-{
-	if (dmc_check_done(nCardNo, nAxisIndex) == 0) //已经在运动中
-		return; 
-	// 设置单轴运动速度曲线, m_nSpeedMin
-	dmc_set_profile(nCardNo, nAxisIndex, 100, 1000, 0.02, 0.02, 100);
-	//设定S段时间
-	dmc_set_s_profile(nCardNo, nAxisIndex, 0, 0.2); //S 段时间，单位：s；范围：0~0.5 s
-	//点动(位置模式)
-	dmc_pmove(nCardNo, nAxisIndex, nPulse*nDirection, nMoveMode);  //最后的0表示相对运动
-}

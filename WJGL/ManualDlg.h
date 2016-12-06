@@ -12,7 +12,6 @@ public:
 	CManualDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CManualDlg();
 	BOOL OnStageMove(UINT nID);
-	void DMC3000_Move(int nCardNo, int nAxisIndex, int nPulse, int nDirection, int nMoveMode);
 
 // Dialog Data
 	enum { IDD = IDD_MANUAL };
