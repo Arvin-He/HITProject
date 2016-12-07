@@ -55,8 +55,6 @@ CWJGLDlg::~CWJGLDlg()
 	OnCamera_Close();   
 }
 
-
-
 void CWJGLDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -99,9 +97,7 @@ BEGIN_MESSAGE_MAP(CWJGLDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_STAGE_Y_STOP_BTN, &CWJGLDlg::OnClickedStageYStopBtn)
 END_MESSAGE_MAP()
 
-
 // CWJGLDlg message handlers
-
 BOOL CWJGLDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -1004,11 +1000,11 @@ void CWJGLDlg::SetDMC3000Status(BOOL status, int nID)
 	pStatus->ModifyStyle(0, SS_BITMAP | SS_CENTERIMAGE);
 	if (status)
 	{
-		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_RED)));
+		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_GREEN)));
 	}
 	else
 	{
-		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_GREEN)));
+		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_RED)));
 	}
 }
 
@@ -1039,8 +1035,8 @@ void CWJGLDlg::UpdateDMC3000Data()
 // 更新状态位
 void CWJGLDlg::UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID)
 {
-	int elup = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x01;
-	int eldown = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x02;
+	int elup = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x02;
+	int eldown = dmc_axis_io_status(g_nCardNo, nAxisIndex) & 0x04;
 	SetDMC3000Status(elup, elupID);
 	SetDMC3000Status(eldown, eldownID);
 }
