@@ -27,14 +27,6 @@ double TransPulseToDistance(int nAxisIndex, int nPulse)
 	{
 		return nPulse;
 	}
-	else if (nAxisIndex == 2)
-	{
-		return 2*nPulse;
-	}
-	else if (nAxisIndex == 3)
-	{
-		return 2*nPulse;
-	}
 	else
 	{
 		return -1;
@@ -50,14 +42,6 @@ int TransDistanceToPulse(int nAxisIndex, int nDistance)
 	else if (nAxisIndex == 1)
 	{
 		return nDistance;
-	}
-	else if (nAxisIndex == 2)
-	{
-		return nDistance/2;
-	}
-	else if (nAxisIndex == 3)
-	{
-		return nDistance/2;
 	}
 	else
 	{
