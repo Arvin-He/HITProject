@@ -832,7 +832,6 @@ BOOL CWJGLDlg::InitDMC3000Card()
 		MessageBox(_T("初始化控制卡失败！"), _T("出错"));
 	dmc_get_CardInfList(&My_CardNum, My_CardTypeList, My_CardList);    //获取正在使用的卡号列表
 	g_nCardNo = My_CardList[0];
-
 	for (int i=0; i<g_nAxisCount; i++)
 	{
 		// 设定脉冲模式及逻辑方向	

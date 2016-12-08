@@ -8,7 +8,7 @@
 
 cv::Mat g_src(cv::Size(640, 480), CV_8UC3);
 WORD g_nCardNo = 0;
-const int g_nAxisCount = 4;
+const int g_nAxisCount = 2;
 
 struct SoftLimitParam g_softLimitParamStruct = {1000, 0, 1000, 0, 700, 0, 700, 0};
 
