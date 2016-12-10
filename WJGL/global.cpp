@@ -21,11 +21,11 @@ double TransPulseToDistance(int nAxisIndex, int nPulse)
 {
 	if (nAxisIndex == 0)
 	{
-		return nPulse;
+		return 2*nPulse;
 	}
 	else if (nAxisIndex == 1)
 	{
-		return nPulse;
+		return 2*nPulse;
 	}
 	else
 	{
@@ -37,11 +37,11 @@ int TransDistanceToPulse(int nAxisIndex, int nDistance)
 {
 	if (nAxisIndex == 0)
 	{
-		return nDistance;
+		return nDistance/2;
 	}
 	else if (nAxisIndex == 1)
 	{
-		return nDistance;
+		return nDistance/2;
 	}
 	else
 	{
