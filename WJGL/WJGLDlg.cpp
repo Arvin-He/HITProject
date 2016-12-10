@@ -999,11 +999,11 @@ void CWJGLDlg::SetDMC3000Status(BOOL status, int nID)
 	pStatus->ModifyStyle(0, SS_BITMAP | SS_CENTERIMAGE);
 	if (status)
 	{
-		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_GREEN)));
+		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_RED)));
 	}
 	else
 	{
-		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_RED)));
+		pStatus->SetBitmap(LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_GREEN)));
 	}
 }
 
@@ -1043,6 +1043,7 @@ void CWJGLDlg::UpdateDMC3000Status(int nAxisIndex, int elupID, int eldownID)
 // 更新脉冲数
 void CWJGLDlg::UpdateDMC3000Pulse(int nAxisIndex, int nPulseID)
 {
+	UpdateData(TRUE);
 	long currentPulse = dmc_get_position(g_nCardNo, nAxisIndex); //获取当前轴位置
 	m_strPulseCount.Format(_T("%ld"), currentPulse);
 	GetDlgItem(nPulseID)->SetWindowText(m_strPulseCount);

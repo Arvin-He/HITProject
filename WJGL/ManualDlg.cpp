@@ -56,16 +56,28 @@ BOOL CManualDlg::OnStageMove(UINT nID)
 	switch(nID)
 	{
 	case IDC_STAGE_XUP_BTN:
-		DMC3000_Move(0, 0, TransDistanceToPulse(0, m_stageStep), 1, 0);
+		{
+			SetMotionParam(0);
+			DMC3000_Move(g_nCardNo, 0, TransDistanceToPulse(0, m_stageStep), 1, 0);
+		}
 		break;
 	case  IDC_STAGE_XDOWN_BTN:
-		DMC3000_Move(0, 0, TransDistanceToPulse(0, m_stageStep), -1, 0);
+		{
+			SetMotionParam(0);
+			DMC3000_Move(g_nCardNo, 0, TransDistanceToPulse(0, m_stageStep), -1, 0);
+		}
 		break;
 	case IDC_STAGE_YUP_BTN:
-		DMC3000_Move(0, 1, TransDistanceToPulse(1, m_stageStep), 1, 0);
+		{
+			SetMotionParam(1);
+			DMC3000_Move(g_nCardNo, 1, TransDistanceToPulse(1, m_stageStep), 1, 0);
+		}
 		break;
 	case  IDC_STAGE_YDOWN_BTN:
-		DMC3000_Move(0, 1, TransDistanceToPulse(1, m_stageStep), -1, 0);
+		{
+			SetMotionParam(1);
+			DMC3000_Move(g_nCardNo, 1, TransDistanceToPulse(1, m_stageStep), -1, 0);
+		}
 		break;
 	default:
 		break;
