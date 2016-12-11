@@ -164,9 +164,9 @@ BOOL CWJGLDlg::OnInitDialog()
 
 	CRect mainDlgRect(0, 0, 0, 0);
 	GetClientRect(&mainDlgRect);
-	mainDlgRect.top += 260;
-	mainDlgRect.left += 680;
-	mainDlgRect.bottom -= 10;
+	mainDlgRect.top += 180;
+	mainDlgRect.left += 880;
+	mainDlgRect.bottom -= 330;
 	mainDlgRect.right -= 10;
 	m_tab.MoveWindow(&mainDlgRect);
 
@@ -193,6 +193,15 @@ BOOL CWJGLDlg::OnInitDialog()
 	m_imageAssistDlg.EnableWindow(TRUE);
 	m_settingDlg.EnableWindow(TRUE);
 	m_setParamDlg.EnableWindow(TRUE);
+
+	CRect tab2Rect(0, 0, 0, 0);
+	GetClientRect(&tab2Rect);
+	tab2Rect.top += 500;
+	tab2Rect.left += 880;
+	tab2Rect.bottom -= 20;
+	tab2Rect.right -= 10;
+	m_bottomTab.MoveWindow(&tab2Rect);
+
 	CRect bottomTabRect(0, 0, 0, 0);
 	m_bottomTab.GetClientRect(&bottomTabRect);
 	bottomTabRect.top += 20;
