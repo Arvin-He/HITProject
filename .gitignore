@@ -1,6 +1,9 @@
+
 *.suo
 *.sdf
 ipch/
+!*.dll
+!*.DLL
 Debug/
 WJGL/Debug/
 WJGL/*.vcxproj.*
