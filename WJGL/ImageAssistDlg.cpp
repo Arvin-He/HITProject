@@ -53,12 +53,12 @@ void CImageAssistDlg::OnClickedShowCrossBtn()
 	if (m_bDrawCross)
 	{
 		m_bDrawCross = FALSE;
-		GetDlgItem(IDC_SHOW_CROSS_BTN)->SetWindowText("隐藏十字");
+		GetDlgItem(IDC_SHOW_CROSS_BTN)->SetWindowText("十字标记");
 	}
 	else
 	{
 		m_bDrawCross =TRUE;
-		GetDlgItem(IDC_SHOW_CROSS_BTN)->SetWindowText("显示十字");
+		GetDlgItem(IDC_SHOW_CROSS_BTN)->SetWindowText("隐藏十字");
 	}
 }
 
@@ -69,12 +69,12 @@ void CImageAssistDlg::OnClickedDrawScaleBtn()
 	if (m_bDrawScale)
 	{
 		m_bDrawScale = FALSE;
-		GetDlgItem(IDC_DRAW_SCALE_BTN)->SetWindowText("隐藏比例尺");
+		GetDlgItem(IDC_DRAW_SCALE_BTN)->SetWindowText("图像比例尺");
 	}
 	else
 	{
 		m_bDrawScale =TRUE;
-		GetDlgItem(IDC_DRAW_SCALE_BTN)->SetWindowText("显示比例尺");
+		GetDlgItem(IDC_DRAW_SCALE_BTN)->SetWindowText("隐藏比例尺");
 	}
 }
 
@@ -87,12 +87,12 @@ void CImageAssistDlg::OnClickedDrawLineBtn()
 		m_bDrawLine = FALSE;
 		CWJGLDlg* pWJGLDlg = (CWJGLDlg*)m_pWJGLDlg;
 		pWJGLDlg->m_drawLinePoints.clear();
-		GetDlgItem(IDC_DRAW_LINE_BTN)->SetWindowText("隐藏直线");
+		GetDlgItem(IDC_DRAW_LINE_BTN)->SetWindowText("画直线");
 	}
 	else
 	{
 		m_bDrawLine =TRUE;
-		GetDlgItem(IDC_DRAW_LINE_BTN)->SetWindowText("显示直线");
+		GetDlgItem(IDC_DRAW_LINE_BTN)->SetWindowText("隐藏直线");
 	}
 }
 
@@ -105,12 +105,12 @@ void CImageAssistDlg::OnClickedDrawRectBtn()
 		m_bDrawRect = FALSE;
 		CWJGLDlg* pWJGLDlg = (CWJGLDlg*)m_pWJGLDlg;
 		pWJGLDlg->m_drawRectPoints.clear();
-		GetDlgItem(IDC_DRAW_RECT_BTN)->SetWindowText("隐藏矩形框");
+		GetDlgItem(IDC_DRAW_RECT_BTN)->SetWindowText("画矩形");
 	}
 	else
 	{
 		m_bDrawRect =TRUE;
-		GetDlgItem(IDC_DRAW_RECT_BTN)->SetWindowText("显示矩形框");
+		GetDlgItem(IDC_DRAW_RECT_BTN)->SetWindowText("隐藏矩形");
 	}
 }
 
@@ -123,12 +123,12 @@ void CImageAssistDlg::OnClickedDrawCircleBtn()
 		m_bDrawCircle = FALSE;
 		CWJGLDlg* pWJGLDlg = (CWJGLDlg*)m_pWJGLDlg;
 		pWJGLDlg->m_drawCirclePoints.clear();
-		GetDlgItem(IDC_DRAW_CIRCLE_BTN)->SetWindowText("隐藏圆形");
+		GetDlgItem(IDC_DRAW_CIRCLE_BTN)->SetWindowText("画圆");
 	}
 	else
 	{
 		m_bDrawCircle =TRUE;
-		GetDlgItem(IDC_DRAW_CIRCLE_BTN)->SetWindowText("显示圆形");
+		GetDlgItem(IDC_DRAW_CIRCLE_BTN)->SetWindowText("隐藏圆");
 	}
 }
 
@@ -141,12 +141,12 @@ void CImageAssistDlg::OnClickedMeasureDisBtn()
 		m_bMeasureDis = FALSE;
 		CWJGLDlg* pWJGLDlg = (CWJGLDlg*)m_pWJGLDlg;
 		pWJGLDlg->m_measureDisPoints.clear();
-		GetDlgItem(IDC_MEASURE_DIS_BTN)->SetWindowText("关闭测量两点");
+		GetDlgItem(IDC_MEASURE_DIS_BTN)->SetWindowText("测量两点距离");
 	}
 	else
 	{
 		m_bMeasureDis =TRUE;
-		GetDlgItem(IDC_DRAW_CIRCLE_BTN)->SetWindowText("开始测量两点");
+		GetDlgItem(IDC_MEASURE_DIS_BTN)->SetWindowText("关闭测量");
 	}
 
 }
