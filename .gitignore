@@ -1,8 +1,8 @@
 
 *.suo
 *.sdf
-/ipch/
-/Debug/
-!/Debug/*.dll
-/WJGL/Debug/
-/WJGL/*.vcxproj.*
+ipch/
+Debug/*
+!Debug/*.dll
+WJGL/Debug/
+WJGL/*.vcxproj.*
